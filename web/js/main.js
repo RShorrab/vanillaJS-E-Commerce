@@ -1,6 +1,8 @@
+import { Cart } from "./cart/cart";
 import { isLogged, userContext } from "./user/userContext";
 
-(function ($) {
+(function ($) 
+{
     "use strict";
     
     // Dropdown on mouse hover
@@ -104,11 +106,43 @@ import { isLogged, userContext } from "./user/userContext";
     
 })(jQuery);
 
+export const updateNavBadge = () =>
+{
+    if (!localStorage.getItem(`${userContext.user_id}-cart`)) 
+        localStorage.setItem(`${userContext.user_id}-cart`, "[]");
+    if (!localStorage.getItem(`${userContext.user_id}-favorites`)) 
+        localStorage.setItem(`${userContext.user_id}-favorites`, "[]");
+
+    let heartSpan = document.querySelector(".heartspan");
+    let cartSpan = document.querySelector(".cartspan");
+    let count = 0
+
+    heartSpan.innerText = (JSON.parse(localStorage.getItem(`${userContext.user_id}-favorites`))).length
+    let cartProducts = JSON.parse(localStorage.getItem(`${userContext.user_id}-cart`));
+    cartProducts.map(product => count+= product.quantity)
+    cartSpan.innerText = count
+}
+
+
+if (isLogged()) 
+{
+    //update nav icon
+    //updateNavBadge()
+}
+
 const userIcon = document.querySelector('.user-icon')
-userIcon.addEventListener('click', ()=>{
+userIcon.addEventListener('click', () => {
     const nestedList = document.querySelector('.nested-user-list');
     nestedList.classList.toggle('d-none');
-    if(isLogged()){
-        nestedList.innerHTML = userContext.email
+    if (isLogged()) 
+    {
+        nestedList.innerHTML = `<h6>${userContext.email}</h6> <button class="logout">LogOut</button>`;
+    }  
+});
+// start logout action 
+document.addEventListener("click", e => {
+    if (e.target.classList.contains("logout")) {
+        sessionStorage.removeItem("token");
+        window.location.href = '/index.html';
     }
 })

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
-
+ 
 <head>
     <meta charset="utf-8">
     <title>MultiShop - Online Shop Website Template</title>
@@ -24,6 +24,7 @@
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="css/style.css" rel="stylesheet">
+    <link href="css/custom.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -104,26 +105,25 @@
                         <div class="navbar-nav mr-auto py-0">
                             <a href="index.html" class="nav-item nav-link">Home</a>
                             <a href="shop.html" class="nav-item nav-link">Shop</a>
-                            <a href="checkout.html" class="nav-item nav-link">Checkout</a>
-                        </div>
+                          </div>
                         <div class="navbar-nav ml-auto py-0 d-none d-lg-block">
                             <a href="" class="btn px-0">
                                 <i class="fas fa-heart text-primary"></i>
-                                <span class="badge text-secondary border border-secondary rounded-circle"
+                                <span class="badge heartspan text-secondary border border-secondary rounded-circle"
                                     style="padding-bottom: 2px">0</span>
                             </a>
-                            <a href="" class="btn px-0 ml-3">
+                            <a href="cart.html" class="btn px-0 ml-3">
                                 <i class="fas fa-shopping-cart text-primary"></i>
-                                <span class="badge text-secondary border border-secondary rounded-circle"
+                                <span class="badge cartspan text-secondary border border-secondary rounded-circle"
                                     style="padding-bottom: 2px">0</span>
                             </a>
-                            <a href="#" class="btn px-0 ml-3 position-relative">
+                            <a href="#" class="btn px-0 ml-3 position-relative" id="userDrop">
                                 <i class="fas fa-user text-primary user-icon"></i>
-                                <div class="nested-user-list position-absolute d-none">
-                                    <a href="/signin.html">signin</a>
-                                    <a href="/signup.html">signup</a>
+                                <div id="dropLogin" class="nested-user-list position-absolute d-none">
+                                  <a href="/signin.html">Sign In</a>
+                                  <a href="/signup.html">Sign Up</a>
                                 </div>
-                            </a>
+                              </a>
                         </div>
                     </div>
                 </nav>
@@ -241,26 +241,26 @@
                         </div>
                         <div
                             class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input size-filter xs" id="size-1">
+                            <input type="checkbox" class="custom-control-input" id="size-1">
                             <label class="custom-control-label" for="size-1">XS</label>
                         </div>
                         <div
                             class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input size-filter s" id="size-2">
+                            <input type="checkbox" class="custom-control-input" id="size-2">
                             <label class="custom-control-label" for="size-2">S</label>
                         </div>
                         <div
                             class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input size-filter m" id="size-3">
+                            <input type="checkbox" class="custom-control-input" id="size-3">
                             <label class="custom-control-label" for="size-3">M</label>
                         </div>
                         <div
                             class="custom-control custom-checkbox d-flex align-items-center justify-content-between mb-3">
-                            <input type="checkbox" class="custom-control-input  size-filter l" id="size-4">
+                            <input type="checkbox" class="custom-control-input" id="size-4">
                             <label class="custom-control-label" for="size-4">L</label>
                         </div>
                         <div class="custom-control custom-checkbox d-flex align-items-center justify-content-between">
-                            <input type="checkbox" class="custom-control-input  size-filter xl" id="size-5">
+                            <input type="checkbox" class="custom-control-input" id="size-5">
                             <label class="custom-control-label" for="size-5">XL</label>
                         </div>
                     </form>
@@ -368,7 +368,8 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
     <script src="lib/easing/easing.min.js"></script>
     <script src="lib/owlcarousel/owl.carousel.min.js"></script>
-
+ 
+    
     <script src="./js/shop/shop.js" type="module"></script>
     <script src="./js/shop/filters.js" type="module"></script>
 </body>
