@@ -1,6 +1,6 @@
 export class Product {
   // count:number, page:number, limit:number, price: [{gte:number, lte:number}], color:[string]
-  static filters = {price:[], color:[]};
+  static filters = { price: [], color: []};
   constructor(product) {
     this.product = product;
   }
@@ -59,17 +59,53 @@ export class Product {
 
   static getHTMLPagination = () => {
     const currentPage = +Product.filters.page;
-    const lastPage = Math.ceil(Product.filters.count/Product.filters.limit);
+    const lastPage = Math.ceil(Product.filters.count / Product.filters.limit);
     return `<div class="col-12">
     <nav>
       <ul class="pagination justify-content-center">
-      ${currentPage > 1 ? `<li class="page-item"><a class="page-link" href="${Product.getPginationQuery(currentPage-1)}">Previous</a></li>`: ''}
-      ${currentPage > 1 ? `<li class="page-item"><a class="page-link" href="?page=1">1</a></li>`: ''}
-      ${currentPage > 2 ? `<li class="page-item"><a class="page-link" href="${Product.getPginationQuery(currentPage-1)}">${currentPage-1}</a></li>`: ''}
-        <li class="page-item"><a class="page-link active" href="${Product.getPginationQuery(currentPage)}">${currentPage}</a></li>
-      ${currentPage < lastPage ? `<li class="page-item"><a class="page-link" href="${Product.getPginationQuery(currentPage+1)}">${currentPage+1}</a></li>` :''}
-      ${currentPage+1 < lastPage ? `<li class="page-item"><a class="page-link" href="${Product.getPginationQuery(lastPage)}">${lastPage}</a></li>`: ''}
-      ${currentPage < lastPage ? `<li class="page-item"><a class="page-link" href="${Product.getPginationQuery(currentPage+1)}">Next</a></li>`: ''}
+      ${
+        currentPage > 1
+          ? `<li class="page-item"><a class="page-link" href="${Product.getPginationQuery(
+              currentPage - 1
+            )}">Previous</a></li>`
+          : ''
+      }
+      ${
+        currentPage > 1
+          ? `<li class="page-item"><a class="page-link" href="?page=1">1</a></li>`
+          : ''
+      }
+      ${
+        currentPage > 2
+          ? `<li class="page-item"><a class="page-link" href="${Product.getPginationQuery(
+              currentPage - 1
+            )}">${currentPage - 1}</a></li>`
+          : ''
+      }
+        <li class="page-item"><a class="page-link active" href="${Product.getPginationQuery(
+          currentPage
+        )}">${currentPage}</a></li>
+      ${
+        currentPage < lastPage
+          ? `<li class="page-item"><a class="page-link" href="${Product.getPginationQuery(
+              currentPage + 1
+            )}">${currentPage + 1}</a></li>`
+          : ''
+      }
+      ${
+        currentPage + 1 < lastPage
+          ? `<li class="page-item"><a class="page-link" href="${Product.getPginationQuery(
+              lastPage
+            )}">${lastPage}</a></li>`
+          : ''
+      }
+      ${
+        currentPage < lastPage
+          ? `<li class="page-item"><a class="page-link" href="${Product.getPginationQuery(
+              currentPage + 1
+            )}">Next</a></li>`
+          : ''
+      }
       </ul>
     </nav>
 </div>`;
@@ -87,6 +123,3 @@ export class Product {
     Product.filters.color = color ? color.split(',') : [];
   };
 }
-
-
-

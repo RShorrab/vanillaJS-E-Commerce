@@ -108,18 +108,19 @@ import { isLogged, userContext } from "./user/userContext";
 
 export const updateNavBadge = () =>
 {
+    if (!localStorage.getItem(`${userContext.user_id}-cart`)) 
+        localStorage.setItem(`${userContext.user_id}-cart`, "[]");
+    if (!localStorage.getItem(`${userContext.user_id}-favorites`)) 
+        localStorage.setItem(`${userContext.user_id}-favorites`, "[]");
+
     let heartSpan = document.querySelector(".heartspan");
     let cartSpan = document.querySelector(".cartspan");
-    let count = 0;
+    let count = 0
 
-    heartSpan.innerText = (JSON.parse(localStorage.getItem(`${userContext.user_id}-favorites`))).length;
-    
+    heartSpan.innerText = (JSON.parse(localStorage.getItem(`${userContext.user_id}-favorites`))).length
     let cartProducts = JSON.parse(localStorage.getItem(`${userContext.user_id}-cart`));
     cartProducts.map(product => count+= product.quantity)
     cartSpan.innerText = count
-
-    console.log(cartProducts);
-    return count
 }
 
 

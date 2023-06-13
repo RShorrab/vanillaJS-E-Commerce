@@ -1,5 +1,6 @@
 import { Checkout } from './check';
 import {isLogged, userContext} from '../user/userContext'
+import { updateNavBadge } from '../main';
 
 let checkedRadio = document.querySelectorAll("input[type='radio'][name='payment']");
 let sendButton = document.getElementById("sendRequest");
@@ -23,19 +24,47 @@ let cartSpan = document.querySelector(".cartspan");
 
 if (isLogged()) 
 {
+    updateNavBadge()
     let orderData = JSON.parse(localStorage.getItem(`${userContext.user_id}-cart`)) || [];
-    let favNum = JSON.parse(localStorage.getItem(`${userContext.user_id}-favorites`)) || [];
 
-    // update navIcon
-    heartSpan.innerText = favNum.length;
-    cartSpan.innerText = orderData.length;
+    orderData.forEach(order => new Checkout(order).renderHtmlContent());
+    Checkout.updateOrderSubTotal(orderData);
+
+    //default tax
+    Checkout.countOrderTax(checkRadio.getAttribute("data-tax"), orderData);
+    checkedRadio.forEach(radio => {
+        radio.addEventListener("click", (e) => {
+            Checkout.countOrderTax(e.target.getAttribute("data-tax"), orderData);
+        })
+    });
+
+    sendButton.addEventListener("click", (e) => {
+        if (firstName.value == "" || lastName.value == "" || userMail.value == "") {
+            submitForm.click();
+        } else if (orderData.length != 0) {
+            let userValue = {
+                first_name: firstName.value,
+                last_name: lastName.value,
+                email: userMail.value,
+                mobile_number: userMobile.value,
+                address1: userAddress1.value,
+                address2: userAddress2.value,
+                country: userCountry.value,
+                city: userCity.value,
+                state: userState.value,
+                zip_code: userCode.value,
+            }
+            Checkout.sendRequest(userValue, uniqueData, userContext.user_id);
+        }
+        
+    });
 
 
-    const updateOrderCount = (data) => 
+    /* const updateOrderCount = (data) => 
     {
         let updateCount = [];
         let orderName = [];
-        for (let i = 0; i < data.length; i++)   //data = array
+        for (let i = 0; i < data.length; i++)   
         {
             let newData = data.filter(order => order.name === data[i].name) //oneproduct
             newData[0].quantity = newData.length;
@@ -52,7 +81,7 @@ if (isLogged())
     }
     let uniqueData = updateOrderCount(orderData);
 
-    uniqueData.forEach(order => new Checkout(order).renderHtmlContent());
+    orderData.forEach(order => new Checkout(order).renderHtmlContent());
 
     Checkout.updateOrderSubTotal(uniqueData);
 
@@ -84,7 +113,7 @@ if (isLogged())
             Checkout.sendRequest(userValue, uniqueData, userContext.user_id);
         }
         
-    });
+    }); */
 
 } 
 else 

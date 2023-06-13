@@ -2,8 +2,8 @@ import { fetchData } from '../fetch/fetch';
 import { endpoints } from '../fetch/endpoints';
 import { Product } from './Product';
 import {isLogged, userContext} from '../user/userContext'
-import { Cart, cartProducts } from '../cart/cart';
-
+import { Cart } from '../cart/cart';
+import { updateNavBadge } from '../main';
 
 let productsList = []
 const handleProductsHTMLElements = products => {
@@ -19,69 +19,57 @@ try {
     endpoints.getProducts.url + Product.getPginationQuery(),
     endpoints.getProducts.method
   );
-  Product.filters.count = res.count;
-  handleProductsHTMLElements(res.data);
+  Product.filters.count = res.data.length
+  const data = Product.addFilterAndPagination(res.data)
+  handleProductsHTMLElements(data);
 } catch (error) {
   console.log(error);
 }
-
 
 
 let heartSpan = document.querySelector(".heartspan");
 let cartSpan = document.querySelector(".cartspan");
 
 if (isLogged()) 
-{
-
-  if (!localStorage.getItem(`${userContext.user_id}-cart`)) 
-    localStorage.setItem(`${userContext.user_id}-cart`, "[]");
-  if (!localStorage.getItem(`${userContext.user_id}-favorites`)) 
-    localStorage.setItem(`${userContext.user_id}-favorites`, "[]");
-
-    heartSpan.innerText = (JSON.parse(localStorage.getItem(`${userContext.user_id}-favorites`))).length
-    let count = 0
-    let cartProducts = JSON.parse(localStorage.getItem(`${userContext.user_id}-cart`));
-    cartProducts.map(product => count+= product.quantity)
-    cartSpan.innerText = count
+{ 
+  updateNavBadge()
+  Cart.getCartProducts() //!IMPORTANT -> to load data and avoid overwriting
   
-    Cart.getCartProducts() //!IMPORTANT -> to load data and avoid overwriting
-  
-    ;(async () => 
-    {
-        try {
-            document.addEventListener("click", (e) => 
-            {
-              let productId = e.target.getAttribute("data-id");
-                if (e.target.classList.contains("cart")) 
-                {                    
-                  let product = productsList.find( product => product._id == productId) 
-                  Cart.addProdoctToCart(product)
-                  cartSpan.innerText = Cart.getProductsCount()
-                  console.log("product Added");
-                }  
-                else if (e.target.classList.contains("heart")) 
-                {
-                  let userFavorites = JSON.parse(localStorage.getItem(`${userContext.user_id}-favorites`));
-                  
-                  if (!userFavorites.includes(productId)) {
-                    userFavorites.push(productId);
-                    heartSpan.innerText = userFavorites.length;
-                    localStorage.setItem(`${userContext.user_id}-favorites`, JSON.stringify(userFavorites));
-                  } 
-                  else {
-                    let filterData = userFavorites.filter(product => product != productId);
-                    heartSpan.innerText = filterData.length;
-                    localStorage.setItem(`${userContext.user_id}-favorites`, JSON.stringify(filterData));
-                  }
+  ;(async () => 
+  {
+      try {
+          document.addEventListener("click", (e) => 
+          {
+            let productId = e.target.getAttribute("data-id");
+              if (e.target.classList.contains("cart")) 
+              {                    
+                let product = productsList.find( product => product._id == productId) 
+                Cart.addProdoctToCart(product)
+                cartSpan.innerText = Cart.getProductsCount()
+                console.log("product Added");
+              }  
+              else if (e.target.classList.contains("heart")) 
+              {
+                let userFavorites = JSON.parse(localStorage.getItem(`${userContext.user_id}-favorites`));
+                
+                if (!userFavorites.includes(productId)) {
+                  userFavorites.push(productId);
+                  heartSpan.innerText = userFavorites.length;
+                  localStorage.setItem(`${userContext.user_id}-favorites`, JSON.stringify(userFavorites));
+                } 
+                else {
+                  let filterData = userFavorites.filter(product => product != productId);
+                  heartSpan.innerText = filterData.length;
+                  localStorage.setItem(`${userContext.user_id}-favorites`, JSON.stringify(filterData));
                 }
-            })
-    
-        } catch (error) {
-            console.log(error);
-        }
-    })();
+              }
+          })
+  
+      } catch (error) {
+          console.log(error);
+      }
+  })();
 }
-
 
 
 // handle user state

@@ -13,11 +13,12 @@ export class Checkout
         this.product = product;
     }
 
-    renderHtmlContent = () => {
+    renderHtmlContent = () => 
+    {
         orderInfoHtml.innerHTML += `
         <div  class="d-flex justify-content-between">
             <p>${this.product.name}   x (${this.product.quantity})</p>
-            <p class="orderPrice">$${(this.product.price * this.product.quantity)}</p>
+            <p class="orderPrice">$${(this.product.totalPrice)}</p>
         </div>
         `
     }
@@ -25,7 +26,7 @@ export class Checkout
     static updateOrderSubTotal = (orderData) => {
         let SubtotalPrice = 0
         orderData.forEach(order => {
-            SubtotalPrice += (order.price * order.quantity)
+            SubtotalPrice += order.totalPrice  //(order.price * order.quantity)
         });
         orderSubtotal.innerHTML = `$${SubtotalPrice}`;
         return SubtotalPrice;
@@ -47,13 +48,13 @@ export class Checkout
             token:sessionStorage.getItem("token")
         }
         try {
-            //const res = await fetchData(endpoints.createOrder.url, endpoints.createOrder.method, body);
+            const res = await fetchData(endpoints.createOrder.url, endpoints.createOrder.method, body);
             console.log(res)
-            // localStorage.setItem(`${user_id}-cart`, "[]");
-            // window.location.href = "checkout.html";
+            localStorage.setItem(user_id, "[]");
+            window.location.href = "checkout.html";
         }catch (error) {
             console.log(error);
-        }
+          }
         
     }
 }

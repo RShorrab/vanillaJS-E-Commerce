@@ -1,16 +1,8 @@
-import { endpoints } from "../fetch/endpoints";
-import { fetchData } from "../fetch/fetch";
 import { updateNavBadge } from "../main";
 import { isLogged, userContext } from "../user/userContext";
 import { Cart, CartLine, cartProducts } from "./cart" 
 let cartSpan = document.querySelector(".cartspan");
 let heartSpan = document.querySelector(".heartspan");
-
-const res = await fetchData(
-    endpoints.getProducts.url,
-    endpoints.getProducts.method
-);
-//Cart.addProdoctToCart(res.data)
 
 
 if(!isLogged())
@@ -19,19 +11,7 @@ if(!isLogged())
 }
 else
 {
-    if (!localStorage.getItem(`${userContext.user_id}-cart`)) 
-    localStorage.setItem(`${userContext.user_id}-cart`, "[]");
-  if (!localStorage.getItem(`${userContext.user_id}-favorites`)) 
-    localStorage.setItem(`${userContext.user_id}-favorites`, "[]");
-
-    heartSpan.innerText = (JSON.parse(localStorage.getItem(`${userContext.user_id}-favorites`))).length
-    let count = 0
-    let cartList = JSON.parse(localStorage.getItem(`${userContext.user_id}-cart`));
-    cartList.map(product => count+= product.quantity)
-    cartSpan.innerText = count
-    
-
-
+    updateNavBadge()
 
     Cart.getCartProducts() 
     Cart.getProductHTML()   
@@ -84,5 +64,3 @@ document.addEventListener("click", e => {
         window.location.href = '/index.html';
     }
 })
-
-
