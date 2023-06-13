@@ -51,7 +51,7 @@ exports.getProductById = async (req, res) => {
 
 exports.updateProduct = async (req, res) => {
   try {
-    const product = await await ProductModel.findByIdAndUpdate(
+    const product = await ProductModel.findByIdAndUpdate(
       req.params.id,
       req.body
     );
@@ -87,4 +87,3 @@ exports.getRecentProducts = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
-

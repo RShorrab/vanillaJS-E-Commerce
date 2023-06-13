@@ -1,6 +1,8 @@
+import { Cart } from "./cart/cart";
 import { isLogged, userContext } from "./user/userContext";
 
-(function ($) {
+(function ($) 
+{
     "use strict";
     
     // Dropdown on mouse hover
@@ -103,7 +105,6 @@ import { isLogged, userContext } from "./user/userContext";
     });
     
 })(jQuery);
-
 
 export const updateNavBadge = () =>
 {

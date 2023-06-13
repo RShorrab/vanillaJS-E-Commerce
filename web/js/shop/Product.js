@@ -162,6 +162,5 @@ export class Product {
     Product.filters.limit = limit ? limit : 9;
     Product.filters.price = price ? price.split(',') : [];
     Product.filters.color = color ? color.split(',') : [];
-    Product.filters.size = size ? size.split(',') : [];
   };
 }
