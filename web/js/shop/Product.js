@@ -1,20 +1,20 @@
 export class Product {
   // count:number, page:number, limit:number, price: [{gte:number, lte:number}], color:[string]
-  static filters = {price:[], color:[], size: []};
+  static filters = {price:[], color:[]};
   constructor(product) {
     this.product = product;
   }
 
-  getCardHTMLElement = () => {
+  getCardHTMLElement = (productId) => 
+  {
     return `
     <div class="col-lg-4 col-md-6 col-sm-6 pb-1">
       <div class="product-item bg-light mb-4">
         <div class="product-img position-relative overflow-hidden">
           <img class="img-fluid w-100" src="${this.product.image}" alt="" />
           <div class="product-action">
-            <a class="btn btn-outline-dark btn-square" href="#">
-            <i class="fa fa-shopping-cart"></i></a>
-            <a class="btn btn-outline-dark btn-square" href="#"><i class="far fa-heart"></i></a>
+            <a class="btn btn-outline-dark btn-square" > <i data-id="${productId}"  class="fa fa-shopping-cart cart"></i></a>
+            <a class="btn btn-outline-dark btn-square" > <i data-id="${productId}"  class="heart far fa-heart"></i></a>
             <a class="btn btn-outline-dark btn-square" href="#"><i class="fa fa-sync-alt"></i></a>
             <a class="btn btn-outline-dark btn-square" href="#"><i class="fa fa-search"></i></a>
           </div>
@@ -54,7 +54,7 @@ export class Product {
   };
 
   static getPginationQuery = (toPage=Product.filters.page)=>{
-    return `?page=${toPage}${Product.filters.price? `&price=${Product.filters.price}`:''}${Product.filters.color ? `&color=${Product.filters.color}`:''}${Product.filters.size ? `&size=${Product.filters.size}`:''}${Product.filters.limit ? `&limit=${Product.filters.limit}`:''}`
+    return `?page=${toPage}${Product.filters.price? `&price=${Product.filters.price}`:''}${Product.filters.color ? `&color=${Product.filters.color}`:''}`
   }
 
   static getHTMLPagination = () => {
@@ -81,11 +81,12 @@ export class Product {
     const limit = url.searchParams.get('limit');
     const price = url.searchParams.get('price')
     const color = url.searchParams.get('color')
-    const size = url.searchParams.get('size')
     Product.filters.page = page ? page : 1;
     Product.filters.limit = limit ? limit : 9;
     Product.filters.price = price ? price.split(',') : [];
     Product.filters.color = color ? color.split(',') : [];
-    Product.filters.size = size ? size.split(',') : [];
   };
 }
+
+
+
