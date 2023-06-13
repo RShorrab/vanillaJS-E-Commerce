@@ -1,19 +1,20 @@
 const ProductModel = require("../models/Product");
 
 exports.getAllProducts = async (req, res) => {
-  let {limit, page, color, price, size} = req.query;
-  limit = limit ? +limit : 9;
-  page = page ? +page : 1;
-  skip = (page-1)*limit;
+  // let {limit, page, color, price, size} = req.query;
+  // limit = limit ? +limit : 9;
+  // page = page ? +page : 1;
+  // skip = (page-1)*limit;
 
-  const filterOptions = {}
-  if(color) filterOptions.color = color.split(',')
-  if(price) filterOptions.$or = price.split(',').map(el=>{return{price: {$lte:+el,$gte:+el-100}}})
-  if(size) filterOptions.size = size.split(',')
+  // const filterOptions = {}
+  // if(color) filterOptions.color = color.split(',')
+  // if(price) filterOptions.$or = price.split(',').map(el=>{return{price: {$lte:+el,$gte:+el-100}}})
+  // if(size) filterOptions.size = size.split(',')
   try {
-    const productsCount = await ProductModel.find(filterOptions).count();
-    const products = await ProductModel.find(filterOptions).limit(limit).skip(skip);
-    res.json({ count:productsCount , data: products, status: "success" });
+    // const productsCount = await ProductModel.find(filterOptions).count();
+    // const products = await ProductModel.find(filterOptions).limit(limit).skip(skip);
+    const products = await ProductModel.find();
+    res.json({ /*count:productsCount ,*/ data: products, status: "success" });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -86,3 +87,4 @@ exports.getRecentProducts = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
